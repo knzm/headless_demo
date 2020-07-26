@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}
+    blog index
+{% endblock %}
+
+{% block content %}
+    <h1>blog index</h1>
+    <div class="container">
+        <div class="row row-eq-height blog-list">
+            {% if pages %}
+                {% for page in pages %}
+                    <li class="col-xs-12 col-sm-6 col-md-3 blog-list-item">
+                        <a href="{% url 'blog_detail' page.id %}">
+                            <div class="text">
+                                <h2 class="blog-list-title">{{ page.title }}</h2>
+                            </div>
+                            <div class="small footer">
+                                {% if page.date_published %}
+                                    {{ page.date_published }} by 
+                                {% endif %}
+                            </div>
+                        </a>
+                    </li>
+                {% endfor %}
+            {% else %}
+                <div class="col-md-12">
+                    <p>Oh, snap. Looks like we were too busy baking to write any blog posts. Sorry.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}
