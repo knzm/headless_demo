@@ -163,3 +163,9 @@ WAGTAIL_SITE_NAME = "backend_site"
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 BASE_URL = 'http://example.com'
+
+# DRF settings
+
+REST_FRAMEWORK = {
+    'DEFAULT_CONTENT_NEGOTIATION_CLASS': 'backend_site.negotiation.IgnoreClientContentNegotiation',
+}
