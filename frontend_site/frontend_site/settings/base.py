@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'dbtemplates',
 ]
 
 MIDDLEWARE = [
@@ -57,16 +59,21 @@ ROOT_URLCONF = 'frontend_site.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            os.path.join(PROJECT_DIR, 'templates'),
-        ],
-        'APP_DIRS': True,
+        # 'DIRS': [
+        #     os.path.join(PROJECT_DIR, 'templates'),
+        # ],
+        'APP_DIRS': False,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+            ],
+            'loaders': [
+                'dbtemplates.loader.Loader',
+                'django.template.loaders.app_directories.Loader',
+                'django.template.loaders.filesystem.Loader',
             ],
         },
     },
@@ -125,3 +132,12 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 ALLOW_PREVIEW = os.environ.get('ALLOW_PREVIEW', '') != ''
+
+SITE_ID = 1
+
+DBTEMPLATES_USE_REVERSION = True
+DBTEMPLATES_USE_REVERSION_COMPARE = False
+
+DBTEMPLATES_USE_TINYMCE = False
+DBTEMPLATES_USE_CODEMIRROR = True
+DBTEMPLATES_USE_REDACTOR = False
