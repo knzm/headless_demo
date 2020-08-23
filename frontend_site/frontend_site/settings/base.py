@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'reversion',
     'dbtemplates',
+    'frontend_site.custom_dbtemplates',
 ]
 
 MIDDLEWARE = [
@@ -72,7 +73,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
             ],
             'loaders': [
-                'dbtemplates.loader.Loader',
+                'frontend_site.custom_dbtemplates.loader.Loader',
                 'django.template.loaders.app_directories.Loader',
                 'django.template.loaders.filesystem.Loader',
             ],
