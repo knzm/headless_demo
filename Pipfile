@@ -9,6 +9,7 @@ wagtail = "<2.10,>=2.9"
 # django-rest-models = "*"
 requests = "*"
 django-dbtemplates = {git = "https://github.com/jazzband/django-dbtemplates.git"}
+django-reversion = "*"
 
 [dev-packages]
 flake8 = "*"
