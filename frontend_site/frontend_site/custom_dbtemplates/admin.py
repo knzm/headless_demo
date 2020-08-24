@@ -20,10 +20,6 @@ class CustomTemplateAdmin(TemplateAdmin):
     def save_model(self, request, obj, form, change):
         if obj.pk is None:
             obj.save()
-        if '_publish' in form.data:
-            reversion.revisions.set_comment(_("Publish."))
-        else:
-            reversion.revisions.set_comment(_('Draft'))
         reversion.revisions.add_to_revision(obj)
         if '_publish' in form.data:
             obj.published = True
@@ -58,7 +54,12 @@ class CustomTemplateAdmin(TemplateAdmin):
                 with self.create_revision(request):
                     response = self.changeform_view(request, quote(version.object_id), request.path, extra_context)
                     # Decide on whether the keep the changes.
-                    if request.method != "POST" or response.status_code != 302:
+                    if request.method == "POST" and response.status_code == 302:
+                        if '_publish' in request.POST:
+                            reversion.revisions.set_comment(_("Publish."))
+                        else:
+                            reversion.revisions.set_comment(_('Draft'))
+                    else:
                         if hasattr('response', 'render'):
                             response.render()  # Eagerly render the response, so it's using the latest version.
                         raise _RollBackRevisionView(response)  # Raise exception to undo the transaction and revision.
