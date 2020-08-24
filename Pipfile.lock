@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "4cbd83e031a5633028059bf14649861750fb0127e7d983ce6d8a460e626556da"
+            "sha256": "1b535393368598aeab77550803ac20b90c949c0d64e232cf0f62f889a1500dc1"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -53,21 +53,6 @@
             ],
             "index": "pypi",
             "version": "==3.0.9"
-        },
-        "django-appconf": {
-            "hashes": [
-                "sha256:1b1d0e1069c843ebe8ae5aa48ec52403b1440402b320c3e3a206a0907e97bb06",
-                "sha256:be58deb54a43d77d2e1621fe59f787681376d3cd0b8bd8e4758ef6c3a6453380"
-            ],
-            "version": "==1.0.4"
-        },
-        "django-dbtemplates": {
-            "git": "https://github.com/jazzband/django-dbtemplates.git",
-            "hashes": [
-                "sha256:76226ed8afde6cc5b5f45031d3689eeb5fd126e5a64182112b97ce9726bf6904",
-                "sha256:6ff4199a7e7b008cd952df1ad0ff05ad07c78a4106590d81def327fa946a0a0b"
-            ],
-            "ref": "68ac54a72b67547a3a9cd3d2ac06bb0878e66dfc"
         },
         "django-modelcluster": {
             "hashes": [

@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib import admin
 from django.db import transaction
 from django.shortcuts import get_object_or_404
@@ -5,16 +6,49 @@ from django.utils.translation import ugettext as _
 
 import reversion
 from reversion.models import Version
-from dbtemplates.models import Template as BaseTemplate
-from dbtemplates.admin import TemplateAdmin, TemplateAdminForm
+
+try:
+    from reversion_compare.admin import CompareVersionAdmin as TemplateModelAdmin
+except ImportError:
+    try:
+        from reversion.admin import VersionAdmin as TemplateModelAdmin
+    except ImportError:
+        from django.contrib.admin import ModelAdmin as TemplateModelAdmin
 
 from .models import Template
 
 
-class CustomTemplateAdmin(TemplateAdmin):
-    class form(TemplateAdminForm):
-        class Meta(TemplateAdminForm.Meta):
-            model = Template
+class TemplateAdminForm(forms.ModelForm):
+    """
+    Custom AdminForm to make the content textarea wider.
+    """
+    content = forms.CharField(
+        widget=forms.Textarea(attrs={'rows': '24'}),
+        required=False,
+    )
+
+    class Meta:
+        model = Template
+        fields = ('name', 'content', 'creation_date', 'last_changed')
+        fields = "__all__"
+
+
+class CustomTemplateAdmin(TemplateModelAdmin):
+    form = TemplateAdminForm
+
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'content'),
+            'classes': ('monospace',),
+        }),
+        (_('Date/time'), {
+            'fields': (('creation_date', 'last_changed'),),
+            'classes': ('collapse',),
+        }),
+    )
+    list_display = ('name', 'creation_date', 'last_changed')
+    save_as = True
+    search_fields = ('name', 'content')
 
     # override: django.contrib.admin.options.ModelAdmin
     def save_model(self, request, obj, form, change):
@@ -78,4 +112,3 @@ class CustomTemplateAdmin(TemplateAdmin):
 
 
 admin.site.register(Template, CustomTemplateAdmin)
-admin.site.unregister(BaseTemplate)

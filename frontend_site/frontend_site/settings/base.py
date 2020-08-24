@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'reversion',
-    'dbtemplates',
     'frontend_site.custom_dbtemplates',
 ]
 
@@ -140,10 +139,3 @@ FIXTURE_DIRS = [
 ALLOW_PREVIEW = os.environ.get('ALLOW_PREVIEW', '') != ''
 
 SITE_ID = 1
-
-DBTEMPLATES_USE_REVERSION = True
-DBTEMPLATES_USE_REVERSION_COMPARE = False
-
-DBTEMPLATES_USE_TINYMCE = False
-DBTEMPLATES_USE_CODEMIRROR = True
-DBTEMPLATES_USE_REDACTOR = False
