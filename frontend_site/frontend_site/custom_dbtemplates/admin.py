@@ -16,6 +16,7 @@ except ImportError:
         from django.contrib.admin import ModelAdmin as TemplateModelAdmin
 
 from .models import Template
+from .fields import TemplateContentTextArea
 
 
 class TemplateAdminForm(forms.ModelForm):
@@ -23,7 +24,7 @@ class TemplateAdminForm(forms.ModelForm):
     Custom AdminForm to make the content textarea wider.
     """
     content = forms.CharField(
-        widget=forms.Textarea(attrs={'rows': '24'}),
+        widget=TemplateContentTextArea(attrs={'rows': '24'}),
         required=False,
     )
 
