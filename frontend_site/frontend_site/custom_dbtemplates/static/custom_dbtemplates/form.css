@@ -1,0 +1,18 @@
+.button.publishlink, input[type=submit].publishlink, .submit-row input.publishlink {
+    float: right;
+    border: none;
+    font-weight: 400;
+    background: #f0ad4e;
+}
+
+.button.publishlink:active, input[type=submit].publishlink:active,
+.button.publishlink:focus, input[type=submit].publishlink:focus,
+.button.publishlink:hover, input[type=submit].publishlink:hover {
+    background: #ec971f;
+}
+
+.button[disabled].publishlink,
+input[type=submit][disabled].publishlink,
+input[type=button][disabled].publishlink {
+    opacity: 0.4;
+}

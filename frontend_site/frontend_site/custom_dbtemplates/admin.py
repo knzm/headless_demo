@@ -20,8 +20,14 @@ class CustomTemplateAdmin(TemplateAdmin):
     def save_model(self, request, obj, form, change):
         if obj.pk is None:
             obj.save()
-        reversion.revisions.set_comment(_('Draft'))
+        if '_publish' in form.data:
+            reversion.revisions.set_comment(_("Publish."))
+        else:
+            reversion.revisions.set_comment(_('Draft'))
         reversion.revisions.add_to_revision(obj)
+        if '_publish' in form.data:
+            obj.published = True
+            obj.save()
 
     # override reversion.admin.VersionAdmin
     def change_view(self, request, object_id, extra_context=None):
