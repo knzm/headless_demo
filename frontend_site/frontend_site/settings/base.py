@@ -133,6 +133,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+FIXTURE_DIRS = [
+    os.path.join(PROJECT_DIR, 'fixtures'),
+]
+
 ALLOW_PREVIEW = os.environ.get('ALLOW_PREVIEW', '') != ''
 
 SITE_ID = 1

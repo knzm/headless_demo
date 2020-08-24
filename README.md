@@ -20,6 +20,7 @@ Setup frontend
 ```
 $ cd frontend_site
 $ pipenv run python manage.py migrate
+$ pipenv run python manage.py loaddata app.json
 ```
 
 Start demo
@@ -43,3 +44,8 @@ site at http://localhost:8001/blog/ .
 You can edit pages through the backend's wagtail admin interface at
 http://localhost:18000/admin/ .
 Log into the admin with the credentials `admin` / `changeme`.
+
+Visit the admin site for frontend servers at
+http://localhost:8000/admin/ to manage your templates.
+The credentials are `admin` / `changeme` as well.
+
