@@ -11,7 +11,7 @@ def index(request):
     }
     if settings.ALLOW_PREVIEW:
         params['draft'] = '1'
-    r = requests.get(f'http://localhost:18000/api/v1/blogs/', params=params)
+    r = requests.get('http://localhost:18000/api/v1/blogs/', params=params)
     data = r.json()
     pages = [item for item in data['items']]
     return TemplateResponse(request, 'blog_index.html', {

@@ -1,4 +1,4 @@
-from .base import *
+from .base import *  # NOQA: F401, F403
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -7,12 +7,12 @@ DEBUG = True
 SECRET_KEY = 'ua*iss&abyqbdy-i8%%9huh%-0-syrelyf##ox%1duo60#v-29'
 
 # SECURITY WARNING: define the correct hosts in production!
-ALLOWED_HOSTS = ['*'] 
+ALLOWED_HOSTS = ['*']
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
 try:
-    from .local import *
+    from .local import *  # NOQA: F401, F403
 except ImportError:
     pass

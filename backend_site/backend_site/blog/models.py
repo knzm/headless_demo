@@ -10,12 +10,13 @@ from modelcluster.fields import ParentalKey
 from taggit.models import Tag, TaggedItemBase
 
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
-from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, StreamFieldPanel
-from wagtail.core.fields import StreamField
-from wagtail.core.models import Page, Orderable
+from wagtail.admin.edit_handlers import (
+    FieldPanel,
+    # InlinePanel,
+)
+from wagtail.core.models import Page
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
-from wagtail.snippets.edit_handlers import SnippetChooserPanel
 
 
 class BlogPageTag(TaggedItemBase):
