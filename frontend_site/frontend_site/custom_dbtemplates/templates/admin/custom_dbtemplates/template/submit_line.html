@@ -3,6 +3,8 @@
 {% load i18n %}
 
 {% block submit-row %}
+{% if show_publish_button %}
 <input type="submit" name="_publish" value="Save and publish" class="publishlink">
+{% endif %}
 {{ block.super }}
 {% endblock %}

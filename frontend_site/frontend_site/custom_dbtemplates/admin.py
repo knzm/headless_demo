@@ -52,7 +52,12 @@ class CustomTemplateAdmin(TemplateAdmin):
                 version.revision.revert(delete=True)
                 # Run the normal changeform view.
                 with self.create_revision(request):
-                    response = self.changeform_view(request, quote(version.object_id), request.path, extra_context)
+                    context = {
+                        'show_publish_button': True,
+                    }
+                    if extra_context is not None:
+                        context.update(extra_context)
+                    response = self.changeform_view(request, quote(version.object_id), request.path, context)
                     # Decide on whether the keep the changes.
                     if request.method == "POST" and response.status_code == 302:
                         if '_publish' in request.POST:
