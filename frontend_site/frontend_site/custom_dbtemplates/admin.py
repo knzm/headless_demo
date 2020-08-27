@@ -6,6 +6,7 @@ from django.utils.translation import ugettext as _
 
 import reversion
 from reversion.models import Version
+from reversion.revisions import create_revision
 
 try:
     from reversion_compare.admin import CompareVersionAdmin as TemplateModelAdmin
@@ -55,10 +56,16 @@ class CustomTemplateAdmin(TemplateModelAdmin):
     def save_model(self, request, obj, form, change):
         if obj.pk is None:
             obj.save()
+        obj.published = False
         reversion.revisions.add_to_revision(obj)
         if '_publish' in form.data:
             obj.published = True
             obj.save()
+
+    # override reversion.admin.VersionAdmin
+    def add_view(self, request, form_url='', extra_context=None):
+        with create_revision(manage_manually=True):
+            return self.changeform_view(request, None, form_url, extra_context)
 
     # override reversion.admin.VersionAdmin
     def change_view(self, request, object_id, extra_context=None):
@@ -66,8 +73,30 @@ class CustomTemplateAdmin(TemplateModelAdmin):
             .get_for_object_reference(self.model, object_id) \
             .select_related('revision')
         version = get_object_or_404(queryset.order_by('-pk')[:1])
+        return self._dbtemplates_revisionform_view(
+            request, version, template_name='', is_revert=False,
+            extra_context=extra_context)
 
-        # clone of VersionAdmin._reversion_revisionform_view
+    # override reversion.admin.VersionAdmin
+    def _reversion_revisionform_view(self, request, version, template_name, extra_context=None):
+        return self._dbtemplates_revisionform_view(
+            request, version, template_name, is_revert=True,
+            extra_context=extra_context)
+
+    def _get_comment(self, request, version, is_revert):
+        from django.utils.formats import localize
+        from django.utils.timezone import template_localtime
+        if is_revert:
+            return _("Reverted to previous version, saved on %(datetime)s") % {
+                "datetime": localize(template_localtime(version.revision.date_created)),
+            }
+        elif '_publish' in request.POST:
+            return _("Publish.")
+        else:
+            return _('Draft')
+
+    # clone of VersionAdmin._reversion_revisionform_view
+    def _dbtemplates_revisionform_view(self, request, version, template_name='', is_revert=False, extra_context=None):
         from django.db import models, connection
         from django.contrib import messages
         from django.contrib.admin.utils import quote
@@ -86,7 +115,7 @@ class CustomTemplateAdmin(TemplateModelAdmin):
                 # Revert the revision.
                 version.revision.revert(delete=True)
                 # Run the normal changeform view.
-                with self.create_revision(request):
+                with create_revision(manage_manually=True):
                     context = {
                         'show_publish_button': True,
                     }
@@ -95,11 +124,11 @@ class CustomTemplateAdmin(TemplateModelAdmin):
                     response = self.changeform_view(request, quote(version.object_id), request.path, context)
                     # Decide on whether the keep the changes.
                     if request.method == "POST" and response.status_code == 302:
-                        if '_publish' in request.POST:
-                            reversion.revisions.set_comment(_("Publish."))
-                        else:
-                            reversion.revisions.set_comment(_('Draft'))
+                        comment = self._get_comment(request, version, is_revert)
+                        reversion.revisions.set_comment(comment)
                     else:
+                        if template_name != '':
+                            response.template_name = template_name  # Set the template name to the correct template.
                         if hasattr('response', 'render'):
                             response.render()  # Eagerly render the response, so it's using the latest version.
                         raise _RollBackRevisionView(response)  # Raise exception to undo the transaction and revision.
