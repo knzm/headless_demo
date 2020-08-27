@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.sites.managers import CurrentSiteManager
 from django.utils.translation import ugettext_lazy as _
 from django.utils.timezone import now
 
