@@ -86,14 +86,21 @@ class CustomTemplateAdmin(TemplateModelAdmin):
     def _get_comment(self, request, version, is_revert):
         from django.utils.formats import localize
         from django.utils.timezone import template_localtime
+        is_publishd = '_publish' in request.POST
         if is_revert:
-            return _("Reverted to previous version, saved on %(datetime)s") % {
-                "datetime": localize(template_localtime(version.revision.date_created)),
-            }
-        elif '_publish' in request.POST:
-            return _("Publish.")
+            if is_publishd:
+                return _("Reverted to previous version, saved on %(datetime)s") % {
+                    "datetime": localize(template_localtime(version.revision.date_created)),
+                }
+            else:
+                return _("Draft: Reverted to previous version, saved on %(datetime)s") % {
+                    "datetime": localize(template_localtime(version.revision.date_created)),
+                }
         else:
-            return _('Draft')
+            if is_publishd:
+                return _("Publish.")
+            else:
+                return _('Draft')
 
     # clone of VersionAdmin._reversion_revisionform_view
     def _dbtemplates_revisionform_view(self, request, version, template_name='', is_revert=False, extra_context=None):

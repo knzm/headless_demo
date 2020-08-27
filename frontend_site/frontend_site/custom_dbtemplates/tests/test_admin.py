@@ -345,7 +345,7 @@ class CustomTemplateAdminTests(TestCase):
             version._object_version.object
             for version in versions
         ]
-        revert_comment = 'Reverted to previous version, saved on %(datetime)s' % {
+        revert_comment = 'Draft: Reverted to previous version, saved on %(datetime)s' % {
             'datetime': localize(template_localtime(list(revisions)[-1].date_created)),
         }
         self.assertEqual([revision.comment for revision in revisions],
