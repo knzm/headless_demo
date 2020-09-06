@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load routes %}
 
 {% block title %}
     blog index
@@ -8,10 +9,10 @@
     <h1>blog index</h1>
     <div class="container">
         <div class="row row-eq-height blog-list">
-            {% if pages %}
-                {% for page in pages %}
+            {% if data.items %}
+                {% for page in data.items %}
                     <li class="col-xs-12 col-sm-6 col-md-3 blog-list-item">
-                        <a href="{% url 'blog_detail' page.id %}">
+                        <a href="{% route_url 'blog_detail' page.id %}">
                             <div class="text">
                                 <h2 class="blog-list-title">{{ page.title }}</h2>
                             </div>
