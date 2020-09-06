@@ -65,7 +65,12 @@ class CustomTemplateAdmin(TemplateModelAdmin):
     # override reversion.admin.VersionAdmin
     def add_view(self, request, form_url='', extra_context=None):
         with create_revision(manage_manually=True):
-            return self.changeform_view(request, None, form_url, extra_context)
+            context = {
+                'show_publish_button': True,
+            }
+            if extra_context is not None:
+                context.update(extra_context)
+            return self.changeform_view(request, None, form_url, context)
 
     # override reversion.admin.VersionAdmin
     def change_view(self, request, object_id, extra_context=None):
