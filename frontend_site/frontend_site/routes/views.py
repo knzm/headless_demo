@@ -9,7 +9,7 @@ from .models import find_route
 
 
 def page_view(request, path):
-    m = find_route(path)
+    m = find_route(path, query=request.GET.urlencode())
     if m is None:
         if settings.APPEND_SLASH and not path.endswith('/'):
             m = find_route(f'{path}/')
@@ -19,13 +19,7 @@ def page_view(request, path):
                 return HttpResponsePermanentRedirect(new_path)
         raise Http404
 
-    params = {
-        'fields': '*',
-    }
-    if settings.ALLOW_PREVIEW:
-        params['draft'] = '1'
-
-    endpoint = m.route.endpoint.format(**m.url_params)
+    endpoint, params = m.build(allow_preview=settings.ALLOW_PREVIEW)
     r = requests.get(endpoint, params=params)
     if r.status_code == 404:
         raise Http404
