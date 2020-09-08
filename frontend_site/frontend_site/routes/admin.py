@@ -19,4 +19,6 @@ class RouteForm(forms.ModelForm):
 class RouteAdmin(admin.ModelAdmin):
     form = RouteForm
 
-    list_display = ('id', 'order', 'name', 'path', 'endpoint', 'template_name')
+    list_display = ['id', 'order', 'name', 'path', 'endpoint', 'template_name']
+    list_editable = ['order']
+    ordering = ['order']
