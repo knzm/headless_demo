@@ -27,7 +27,7 @@ class RouteMatch(object):
         }
         if allow_preview:
             params['draft'] = '1'
-        return endpoint, params
+        return endpoint + self.extra_path, params
 
 
 class Route(models.Model):
@@ -36,12 +36,15 @@ class Route(models.Model):
     path = models.TextField(null=False, blank=True)
     endpoint = models.TextField(null=False, blank=True)
     template_name = models.TextField(null=False, blank=False)
+    allow_extra_path = models.BooleanField(null=False, blank=False, default=False)
 
     def match(self, path):
         m = re.match(_route_to_regex(self.path)[0], path)
         if m is None:
             return None
         extra_path = path[m.end():]
+        if extra_path and not self.allow_extra_path:
+            return None
         return RouteMatch(self, m.groupdict(), extra_path)
 
 
