@@ -34,7 +34,7 @@ class RouteMatch(object):
 class Route(models.Model):
     order = models.IntegerField(null=True)
     name = models.TextField(null=False, blank=False)
-    path = models.TextField(null=False, blank=False)
+    path = models.TextField(null=False, blank=True)
     endpoint = models.TextField(null=False, blank=True)
     template_name = models.TextField(null=False, blank=False)
 

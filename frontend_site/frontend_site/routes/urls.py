@@ -4,5 +4,5 @@ from . import views
 
 
 urlpatterns = [
-    re_path('^(?P<path>.+)$', views.page_view, name='routes_page'),
+    re_path('^(?P<path>.*)$', views.page_view, name='routes_page'),
 ]
