@@ -19,12 +19,15 @@ def page_view(request, path):
                 return HttpResponsePermanentRedirect(new_path)
         raise Http404
 
-    endpoint, params = m.build(allow_preview=settings.ALLOW_PREVIEW)
-    r = requests.get(endpoint, params=params)
-    if r.status_code == 404:
-        raise Http404
-    r.raise_for_status()
+    data = None
+    if m.route.endpoint:
+        endpoint, params = m.build(allow_preview=settings.ALLOW_PREVIEW)
+        r = requests.get(endpoint, params=params)
+        if r.status_code == 404:
+            raise Http404
+        r.raise_for_status()
+        data = r.json()
 
     return TemplateResponse(request, m.route.template_name, {
-        'data': r.json(),
+        'data': data,
     })
