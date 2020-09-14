@@ -9,6 +9,7 @@ wagtail = "<2.10,>=2.9"
 # django-rest-models = "*"
 requests = "*"
 django-reversion = "*"
+django-jsrender = "*"
 
 [dev-packages]
 flake8 = "*"
