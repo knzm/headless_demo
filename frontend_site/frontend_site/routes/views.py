@@ -9,7 +9,7 @@ from .models import find_route
 
 
 def page_view(request, path):
-    m = find_route(path, query=request.GET.urlencode())
+    m = find_route(path)
     if m is None:
         if settings.APPEND_SLASH and not path.endswith('/'):
             m = find_route(f'{path}/')

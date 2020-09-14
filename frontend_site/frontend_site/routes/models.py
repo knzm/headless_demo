@@ -13,13 +13,12 @@ from django.utils.http import (
 
 
 class RouteMatch(object):
-    __slots__ = ('route', 'url_params', 'extra_path', 'query')
+    __slots__ = ('route', 'url_params', 'extra_path')
 
-    def __init__(self, route, url_params, extra_path, query):
+    def __init__(self, route, url_params, extra_path):
         self.route = route
         self.url_params = url_params
         self.extra_path = extra_path
-        self.query = query
 
     def build(self, allow_preview=False):
         endpoint = self.route.endpoint.format(**self.url_params)
@@ -38,17 +37,17 @@ class Route(models.Model):
     endpoint = models.TextField(null=False, blank=True)
     template_name = models.TextField(null=False, blank=False)
 
-    def match(self, path, query=''):
+    def match(self, path):
         m = re.match(_route_to_regex(self.path)[0], path)
         if m is None:
             return None
         extra_path = path[m.end():]
-        return RouteMatch(self, m.groupdict(), extra_path, query)
+        return RouteMatch(self, m.groupdict(), extra_path)
 
 
-def find_route(path, query=''):
+def find_route(path):
     for route in Route.objects.order_by('order', 'path').all():
-        m = route.match(path, query)
+        m = route.match(path)
         if m is not None:
             return m
     else:
