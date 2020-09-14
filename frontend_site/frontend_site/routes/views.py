@@ -28,6 +28,12 @@ def page_view(request, path):
         r.raise_for_status()
         data = r.json()
 
-    return TemplateResponse(request, m.route.template_name, {
+    context = {
         'data': data,
-    })
+    }
+    return TemplateResponse(
+        request,
+        m.route.template_name,
+        context=context,
+        content_type=m.route.content_type,
+    )

@@ -36,6 +36,7 @@ class Route(models.Model):
     path = models.TextField(null=False, blank=True)
     endpoint = models.TextField(null=False, blank=True)
     template_name = models.TextField(null=False, blank=False)
+    content_type = models.TextField(null=False, blank=False, default='text/html')
     allow_extra_path = models.BooleanField(null=False, blank=False, default=False)
 
     def match(self, path):
