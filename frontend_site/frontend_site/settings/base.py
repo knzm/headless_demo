@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'reversion',
     'frontend_site.custom_dbtemplates',
+    'jsrender',
 ]
 
 MIDDLEWARE = [
@@ -139,3 +140,5 @@ FIXTURE_DIRS = [
 ALLOW_PREVIEW = os.environ.get('ALLOW_PREVIEW', '') != ''
 
 SITE_ID = 1
+
+# JSRENDER_ESCAPE_FUNCTION = 'html_escape'
