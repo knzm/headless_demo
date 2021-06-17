@@ -5,7 +5,7 @@ verify_ssl = true
 
 [packages]
 Django = ">=3.0,<3.1"
-wagtail = "<2.10,>=2.9"
+wagtail = ">=2.9,<2.12"
 # django-rest-models = "*"
 requests = "*"
 django-reversion = "*"
